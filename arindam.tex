@@ -1,97 +1,261 @@
-# AltaCV, yet another LaTeX CV/Résumé class
+%%%%%%%%%%%%%%%%%
+% This is an example CV created using altacv.cls (v1.3, 10 May 2020) written by
+% LianTze Lim (liantze@gmail.com), based on the
+% Cv created by BusinessInsider at http://www.businessinsider.my/a-sample-resume-for-marissa-mayer-2016-7/?r=US&IR=T
+%
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+%%%%%%%%%%%%%%%%
 
-v1.3.2 (17 May 2020), by LianTze Lim (liantze@gmail.com)
+%% If you are using \orcid or academicons
+%% icons, make sure you have the academicons
+%% option here, and compile with XeLaTeX
+%% or LuaLaTeX.
+% \documentclass[10pt,a4paper,academicons]{altacv}
 
-_Sample file with new paracol layout added on 2 February 2020_
+%% Use the "normalphoto" option if you want a normal photo instead of cropped to a circle
+% \documentclass[10pt,a4paper,normalphoto]{altacv}
 
-(Thanks to [Nur](https://github.com/nurh) for the name.)
+\documentclass[10pt,a4paper,ragged2e,withhyper]{altacv}
 
-It all started with this:
+%% AltaCV uses the fontawesome5 and academicon fonts
+%% and packages.
+%% See http://texdoc.net/pkg/fontawesome5 and http://texdoc.net/pkg/academicons for full list of symbols. You MUST compile with XeLaTeX or LuaLaTeX if you want to use academicons.
 
-[<img src="tweet-that-started-this.png" width="500px">](https://twitter.com/Leonduck/status/764281546408923136)
+% Change the page layout if you need to
+\geometry{left=1.25cm,right=1.25cm,top=1.5cm,bottom=1.5cm,columnsep=1.2cm}
 
-Leonardo was talking about a [résumé of Marissa Mayer that Business Insider put together](http://www.businessinsider.my/a-sample-resume-for-marissa-mayer-2016-7/) using [enhancv.com](https://enhancv.com).
-I _knew_ I had to do something about it. And so AltaCV was born.
-
-## Samples
-
-This is how the re-created résumé looks like ([view/open on Overleaf](https://www.overleaf.com/latex/examples/recreating-business-insiders-cv-of-marissa-mayer-using-altacv/gtqfpbwncfvp)):
-
-<img src="mmayer.png" alt="Marissa Mayer's résumé, re-created with AltaCV" width="600px">
-
-Though if you're creating your own CV/résumé, you'd probably prefer using the basic template ([view/open on Overleaf](https://www.overleaf.com/latex/templates/altacv-template/trgqjpwnmtgv)):
-
-<img src="sample.png" alt="sample barebones AltaCV template" width="600px">
-
-
-## Requirements and Compilation
-
-* pdflatex + biber + pdflatex
-* AltaCV uses [`fontawesome`](http://www.ctan.org/pkg/fontawesome) and [`academicons`](http://www.ctan.org/pkg/academicons); they're included in both TeX Live 2016 and MikTeX 2.9.
-* Loading `academicons` is optional: enable it by adding the `academicons` option to `\documentclass`.
-* Use the `normalphoto` option to get normal (i.e. non-circular) photos.
-* As of v1.2 you can add multiple photos on the left or right: `\photoL{2cm}{logo1}` and `\photoR{2.5cm}{logo2,photo}`. (`\photo` will work like `\photoR`.) Separate your image filenames with commas _without_ spaces.
-* Use the `ragged2d` option to activate hyphenations while keeping text left-justified; line endings will thus be less jagged and more aesthetically pleasing.
-* Can now be compiled with pdflatex, XeLaTeX and LuaLaTeX!
-* However if you're using `academicons`, you _must_ use either XeLaTeX or LuaLaTeX. If the doc then compiles but the icons don't show up in the output PDF, try compiling with LuaLaTeX instead.
-* The samples here use the [Lato](http://www.latofonts.com/lato-free-fonts/) font. Feel free to use a different typeface package instead—often a different typeface will change the entire CV's feel.
+% The paracol package lets you typeset columns of text in parallel
+\usepackage{paracol}
 
 
-## Example Files
+% Change the font if you want to, depending on whether
+% you're using pdflatex or xelatex/lualatex
+\ifxetexorluatex
+  % If using xelatex or lualatex:
+  \setmainfont{Lato}
+\else
+  % If using pdflatex:
+  \usepackage[default]{lato}
+\fi
 
-### `sample.tex`
+% Change the colours if you want to
+\definecolor{LightGreen}{HTML}{93755F}
+\definecolor{SlateGrey}{HTML}{2E2E2E}
+\definecolor{LightGrey}{HTML}{666666}
+% \colorlet{name}{black}
+\colorlet{tagline}{LightGreen}
+\colorlet{heading}{LightGreen}
+\colorlet{headingrule}{LightGreen}
+% \colorlet{subheading}{PastelRed}
+\colorlet{accent}{LightGreen}
+\colorlet{emphasis}{SlateGrey}
+\colorlet{body}{LightGrey}
 
-(You may prefer to use `sample-alt.tex` instead; please read both sections before proceeding.)
+% Change some fonts, if necessary
+% \renewcommand{\namefont}{\Huge\rmfamily\bfseries}
+% \renewcommand{\personalinfofont}{\footnotesize}
+% \renewcommand{\cvsectionfont}{\LARGE\rmfamily\bfseries}
+% \renewcommand{\cvsubsectionfont}{\large\bfseries}
 
-This is the original sample template file. The right sidebar is actually a _marginpar_, so it doesn't support footnote and cannot automatically break across pages if it's too long. You would need to split your right sidebar contents into separate files e.g. `p1sidebar.tex` and `p2sidebar.tex`, and insert them as the optional argument of the `\cvsection{...}` that you want to align them with:
+% Change the bullets for itemize and rating marker
+% for \cvskill if you want to
+\renewcommand{\itemmarker}{{\small\textbullet}}
+\renewcommand{\ratingmarker}{\faCircle}
 
-```latex
-\cvsection[p1sidebar]{Experience}
-...
-... END OF FIRST PAGE OF YOUR CV ...
-\cvsection[page2sidebar]{Publications}
-...
-```
+%% sample.bib contains your publications
+\addbibresource{sample.bib}
 
-This assumes that the next page's main column would start immediately with a `\cvsection`, so that the top of your right sidebar contents also appear at the top of the page. Now if the _next_ page doesn't start with a `\cvsection` but you'd still like to add a sidebar, then use this command on the _current_ page to add it. The optional argument lets you pull up the sidebar a bit so that it looks aligned with the top of the main column:
+\begin{document}
+\name{ARINDAM PRADHAN}
+\tagline{Software Engineer \& Proud Geek}
+% Cropped to square from https://en.wikipedia.org/wiki/Marissa_Mayer#/media/File:Marissa_Mayer_May_2014_(cropped).jpg, CC-BY 2.0
+%% You can add multiple photos on the left or right
+\photoR{2.5cm}{arindam}
+% \photoL{2cm}{Yacht_High,Suitcase_High}
+\personalinfo{%
+  % Not all of these are required!
+  % You can add your own with \printinfo{symbol}{detail}
+  \email{arindampradhan10@gmail.com}
+  \phone{+91-9078954415}
+%   \mailaddress{House no. 139, 4th Block Kormangala}
+  \location{Kormangala, Bangalore}
+  \homepage{medium.com/crazyhacker}
+  \twitter{@rrindam}
+  \linkedin{arindampradhan}
+  \github{arindampradhan} % I'm just making this up though.
+  \dribbble{arindampradhan}
+%   \orcid{orcid.org/0000-0000-0000-0000} % Obviously making this up too. If you want to use this field (and also other academicons symbols), add "academicons" option to \documentclass{altacv}
+  %% You MUST add the academicons option to \documentclass, then compile with LuaLaTeX or XeLaTeX, if you want to use \orcid or other academicons commands.
+  % \orcid{0000-0000-0000-0000}
+  %% You can add your own arbtrary detail with
+  %% \printinfo{symbol}{detail}[optional hyperlink prefix]
+  % \printinfo{\faPaw}{Hey ho!}
+  %% Or you can declare your own field with
+  %% \NewInfoFiled{fieldname}{symbol}[optional hyperlink prefix] and use it:
+  % \NewInfoField{gitlab}{\faGitlab}[https://gitlab.com/]
+}
 
-```latex
-\addnextpagesidebar[-1ex]{page3sidebar}
-```
-
-If you want to change the left and right columns' widths, you'll need to tinker with the `right` (distance from paper's right edge until the main column's right edge) and `marginparwidth` (width of the right sidebar) options in the `\geometry` line. For example, to make the right sidebar wider by 2cm, you could use
-
-```latex
-%% original was right=9cm, marginparwidth=6.8cm
-\geometry{left=1cm,right=11cm,marginparwidth=8.8cm,marginparsep=1.2cm,top=1cm,bottom=1cm}
-```
-as well as doing a bit of arithmetic when you're making the header to get it full-width, i.e. reducing the sidebar by 2cm and extending the main column by 2cm.
-
-```latex
-\begin{adjustwidth}{}{-10cm}  %% original was -8cm
 \makecvheader
-\end{adjustwidth}
-```
 
-### `sample-alt.tex` [ADDED 2 FEBRUARY 2020]
-Many users have overlooked the optional argument of `\cvsection` to insert the right sidebar contents, and often confused that the right sidebar doesn't automatically break across pages. This new layout uses the `paracol` package for typesetting the left and right columns that _can_ break across pages. It also makes changing the column widths easier:
+%% Depending on your tastes, you may want to make fonts of itemize environments slightly smaller
+\AtBeginEnvironment{itemize}{\small}
 
-```latex
 %% Set the left/right column width ratio to 6:4.
 \columnratio{0.6}
 
 % Start a 2-column paracol. Both the left and right columns will automatically
 % break across pages if things get too long.
 \begin{paracol}{2}
-\cvsection{Experience}
-...
-... END OF LEFT COLUMN CONTENTS ...
 
-% Now switch to the right column.
+\cvsection{Experience}
+
+\cvevent{Senior Frontend Developer}{Meesho}{March 2019 -- Ongoing}{Bangalore, Karnataka}
+\begin{itemize}
+\item Focussed on bringing webviews to near native speed as compared to android views, supporting older Android OS.
+\item Created a logo generator which got scaled to a million users seamlessly. The arctecture was based on serverless designs.
+\end{itemize}
+
+\divider
+
+\cvevent{Software Engineer}{Rubique}{Oct 2017 -- Feb 2019}{Mumbai, Maharastra}
+\begin{itemize}
+\item Managed project to meet design needs of the UX Team.
+\item Migrated the project from a php/jquery site to a react redux based site.
+\item Wrote the entire project architecture from scratch.
+\item The project was a large scale project with 6 Devs, 2 Designers and a PM.
+\item Implemented PWA and Adaptive design on the website and made the app work offline first.
+\end{itemize}
+
+\divider
+
+\cvevent{UX Developer}{Nowfloats}{June 2016 --  Sep 2017}{Hyderabad, Telengana}
+
+\begin{itemize}
+\item Wrote a project webform from scratch and started providing services for it's initial customer base.
+\item Learnt react and taught to my entire team about it and helped them write the configuration and architecture of new react projects in company.
+\item Added support for 3rd party APIS (Twitter, Facebook, Instamojo payments).
+\end{itemize}
+
+\divider
+
+\cvevent{Software Intern}{Sormen Solutios}{Dec 2015 --  Feb 2016}{Bhubaneswar}
+
+\begin{itemize}
+\item Wrote a crawler to scrape Singapore University websites to gather the courses they are providing.
+\end{itemize}
+
+\cvsection{A Day of My Life}
+
+% Adapted from @Jake's answer from http://tex.stackexchange.com/a/82729/226
+% \wheelchart{outer radius}{inner radius}{
+% comma-separated list of value/text width/color/detail}
+% Some ad-hoc tweaking to adjust the labels so that they don't overlap
+\hspace*{-1em}  %% quick hack to move the wheelchart a bit left
+\wheelchart{1.5cm}{0.5cm}{%
+  10/13em/accent!30/Sleeping \& dreaming \\ about work,
+  30/9em/accent!60/Project Planning and architecture,
+  20/11em/accent!40/Spending time\\ with families,
+  10/8em/accent!20/\footnotesize Maintaining Older Codebases and upgrading to newer libraries.
+}
+
+% use ONLY \newpage if you want to force a page break for
+% ONLY the currentc column
+\newpage
+
+% \cvsection{Publications}
+
+% \nocite{*}
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faBook}{Books}},type=book]
+
+% \divider
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faFile*[regular]}{Journal Articles}}, type=article]
+
+% \divider
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faUsers}{Conference Proceedings}},type=inproceedings]
+
+%% Switch to the right column. This will now automatically move to the second
+%% page if the content is too long.
 \switchcolumn
+
+\cvsection{Life Philosophy}
+\begin{quote}
+``Once you start working on something, don't be afraid of failure and don't abandon it. People who work sincerely are the happiest.''
+\end{quote}
+
+\cvsection{SIDE PROJECTS}
+
+\cvachievement{\faTrophy}{Freelance}{cloudstree.com}
+
+\divider
+
+\cvachievement{\faFigma}{Design}{dribbble.com/arindampradhan}
+
+\divider
+
+\cvachievement{\faCodeBranch}{Opensource}{resume.github.io/?arindampradhan}
+
+\divider
+
+\cvachievement{\faLaptopCode}{Hackathons}{arindampradhan.github.io/Team-dubhacks}
+
+\cvsection{SKILLS \& TOOLS}
+
+\cvtag{React.js}
+\cvtag{Redux} \\
+\cvtag{Mobx}
+\cvtag{Recoil}
+
+
+\divider\smallskip
+
+\cvtag{Databases}
+\cvtag{MySql}
+\cvtag{Mongodb}\\
+\cvtag{Redis}
+% \cvtag{PouchDB}
+
+\divider\smallskip
+
+\cvtag{AWS}
+\cvtag{EC2}
+\cvtag{Cdn}
+\cvtag{S3} \\
+\cvtag{Lambda}
+% \cvtag{PouchDB}
+
+\divider\smallskip
+
+\cvtag{UX}
+\cvtag{Figma}
+\cvtag{zeplin}
+
+
+
+\cvsection{Languages}
+
+\cvskill{Javascript/Nodejs}{3}
+% \divider
+
+\cvskill{Python}{3}
+% \divider
+
+\cvskill{Go}{1}
+
+
 \cvsection{Education}
-...
-...END OF RIGHT COLUMN CONTENTS ...
+
+\cveducation{B.Tech Electrical Engineering}{C.E.T Bhubaneswar}{August 2012 -- July 2016}{}
+
+
 \end{paracol}
-```
-You can also use `\swithcolumn*` for "synchronising" the columns, as well as other commands from the `paracol` package. See the [`paracol` package documentation](http://texdoc.net/pkg/paracol) for further details.
+
+\end{document}
