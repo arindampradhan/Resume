@@ -1,6 +1,7 @@
 %%%%%%%%%%%%%%%%%
-% This is altacv.cls (v1.3.2, 17 May 2020) written by
-% LianTze Lim (liantze@gmail.com).
+% This is an example CV created using altacv.cls (v1.3, 10 May 2020) written by
+% LianTze Lim (liantze@gmail.com), based on the
+% Cv created by BusinessInsider at http://www.businessinsider.my/a-sample-resume-for-marissa-mayer-2016-7/?r=US&IR=T
 %
 %% It may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3
@@ -9,439 +10,255 @@
 %%    http://www.latex-project.org/lppl.txt
 %% and version 1.3 or later is part of all distributions of LaTeX
 %% version 2003/12/01 or later.
-%%
-%%
-% Contributions:
-% - https://github.com/akreuzer Added ragged2e option (5 Nov 2018)
-% - https://github.com/stefanogermano Fixed bad boxes and undefined font shape (July 2018)
-% - https://github.com/foohyfooh Fixed blank spaces in \cvevent and bad link in README.md (June 2018)
-
 %%%%%%%%%%%%%%%%
-\NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{altacv}[2020/05/17 AltaCV v1.3.2, yet another alternative class for a resume/curriculum vitae.]
 
-%% v1.1: Optionally load academicons
-\newif\if@academicons
-\DeclareOption{academicons}{\@academiconstrue}
-%% v1.1.3: Choice of round/square photo
-\newif\if@normalphoto
-\DeclareOption{normalphoto}{\@normalphototrue}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{extarticle}}
-\newif\if@raggedtwoe
-\DeclareOption{ragged2e}{\@raggedtwoetrue}
-%% v1.3: load hyperref for clickable hyperlinks
-\newif\if@withhyper
-\DeclareOption{withhyper}{\@withhypertrue}
-\ProcessOptions\relax
+%% If you are using \orcid or academicons
+%% icons, make sure you have the academicons
+%% option here, and compile with XeLaTeX
+%% or LuaLaTeX.
+% \documentclass[10pt,a4paper,academicons]{altacv}
 
-\LoadClass{article}
-%% v1.3.2 Hopefully this helps make the PDF
-%% file more 'friendly' with copy-paste etc
-\RequirePackage[a-1b]{pdfx}
-\RequirePackage[margin=2cm]{geometry}
-\RequirePackage[fixed]{fontawesome5}
-\RequirePackage{ifxetex,ifluatex}
-\RequirePackage{scrlfile}
-\RequirePackage{xparse}
+%% Use the "normalphoto" option if you want a normal photo instead of cropped to a circle
+% \documentclass[10pt,a4paper,normalphoto]{altacv}
 
-%% v1.1.5: added for convenience
-\newif\ifxetexorluatex
-\ifxetex
-  \xetexorluatextrue
-\else
-  \ifluatex
-    \xetexorluatextrue
-  \else
-    \xetexorluatexfalse
-  \fi
-\fi
+\documentclass[10pt,a4paper,ragged2e,withhyper]{altacv}
 
+%% AltaCV uses the fontawesome5 and academicon fonts
+%% and packages.
+%% See http://texdoc.net/pkg/fontawesome5 and http://texdoc.net/pkg/academicons for full list of symbols. You MUST compile with XeLaTeX or LuaLaTeX if you want to use academicons.
+
+% Change the page layout if you need to
+\geometry{left=1.25cm,right=1.25cm,top=1.5cm,bottom=1.5cm,columnsep=1.2cm}
+
+% The paracol package lets you typeset columns of text in parallel
+\usepackage{paracol}
+
+
+% Change the font if you want to, depending on whether
+% you're using pdflatex or xelatex/lualatex
 \ifxetexorluatex
-  \RequirePackage{fontspec}
+  % If using xelatex or lualatex:
+  \setmainfont{Lato}
 \else
-  %% v1.3.2 attempts to make ligatures
-  %% copy-paste as normal characters
-  \RequirePackage{cmap}
-  \RequirePackage[utf8]{inputenc}
-  \RequirePackage[T1]{fontenc}
-  \input{glyphtounicode}
-  \pdfglyphtounicode{f_f}{FB00}
-  \pdfglyphtounicode{f_f_i}{FB03}
-  \pdfglyphtounicode{f_f_l}{FB04}
-  \pdfglyphtounicode{f_i}{FB01}
-  \pdfgentounicode=1
+  % If using pdflatex:
+  \usepackage[default]{lato}
 \fi
 
-%% v1.1: Optionally load academicons
-%% v1.1.5: Handle different versions of academicons
-\if@academicons
-  \ifxetexorluatex
-    \RequirePackage{fontspec}
-    %% academicons in TL2018 doesn't require
-    %% Academicons to be installed in OS fonts
-    %% so can be loaded directly
-    \@ifl@t@r\fmtversion{2018/04/01}{%
-      \RequirePackage{academicons}
-    }{%
-      % TL2017
-      \@ifl@t@r\fmtversion{2017/04/01}{%
-        \@ifpackagelater{academicons}{2018/03/01}{%
-          \RequirePackage{academicons}
-        }{%
-          \let\ori@newfontfamily\newfontfamily%
-          \renewcommand{\newfontfamily}[2]{}
-          \RequirePackage{academicons}
-          \let\newfontfamily\ori@newfontfamily
-          \newfontfamily{\AI}{academicons.ttf}
-        }
-      }{% TL2016 requires the package to be loaded before
-        % the version can be checked. Only added because
-        % Overleaf v1 still runs TL2016; will be removed
-        % when v1 is completely retired.
-          \let\ori@newfontfamily\newfontfamily%
-          \renewcommand{\newfontfamily}[2]{}
-          \RequirePackage{academicons}
-          \let\newfontfamily\ori@newfontfamily
-          \newfontfamily{\AI}{academicons.ttf}
-      }
-    }
-  \else
-    \ClassError{AltaCV}{academicons unsupported by latex or pdflatex. Please compile with xelatex or lualatex}{Please compile with xelatex or lualatex to use the academicons option}
-  \fi
-\fi
+% Change the colours if you want to
+\definecolor{LightGreen}{HTML}{93755F}
+\definecolor{SlateGrey}{HTML}{2E2E2E}
+\definecolor{LightGrey}{HTML}{666666}
+% \colorlet{name}{black}
+\colorlet{tagline}{LightGreen}
+\colorlet{heading}{LightGreen}
+\colorlet{headingrule}{LightGreen}
+% \colorlet{subheading}{PastelRed}
+\colorlet{accent}{LightGreen}
+\colorlet{emphasis}{SlateGrey}
+\colorlet{body}{LightGrey}
 
-\if@raggedtwoe
-  \RequirePackage[newcommands]{ragged2e}
-\fi
+% Change some fonts, if necessary
+% \renewcommand{\namefont}{\Huge\rmfamily\bfseries}
+% \renewcommand{\personalinfofont}{\footnotesize}
+% \renewcommand{\cvsectionfont}{\LARGE\rmfamily\bfseries}
+% \renewcommand{\cvsubsectionfont}{\large\bfseries}
 
-\if@withhyper
-  \AtBeginDocument{%
-    \RequirePackage{hyperref}
-    \hypersetup{hidelinks}
-    \urlstyle{same}
-  }
-\fi
+% Change the bullets for itemize and rating marker
+% for \cvskill if you want to
+\renewcommand{\itemmarker}{{\small\textbullet}}
+\renewcommand{\ratingmarker}{\faCircle}
 
-\RequirePackage{xcolor}
+%% sample.bib contains your publications
+\addbibresource{sample.bib}
 
-\colorlet{accent}{blue!70!black}
-\colorlet{emphasis}{black}
-\colorlet{heading}{black}
-\colorlet{headingrule}{black}
-\colorlet{subheading}{emphasis}
-\colorlet{body}{black!80!white}
-\colorlet{name}{heading}
-\colorlet{tagline}{accent}
-\newcommand{\itemmarker}{{\small\textbullet}}
-\newcommand{\ratingmarker}{\faCircle}
-
-\RequirePackage{tikz}
-\usetikzlibrary{arrows}
-\RequirePackage[skins]{tcolorbox}
-\RequirePackage[inline]{enumitem}
-\setlist{leftmargin=*,labelsep=0.5em,nosep,itemsep=0.25\baselineskip,after=\vspace{0.25\baselineskip}}
-\setlist[itemize]{label=\itemmarker}
-\RequirePackage{graphicx}
-\RequirePackage{etoolbox}
-\RequirePackage{dashrule}
-\RequirePackage{multirow,tabularx}
-\RequirePackage{changepage}
-% \RequirePackage{marginfix}
-
-\lastupdated
-
-\setlength{\parindent}{0pt}
-\newcommand{\divider}{\textcolor{body!30}{\hdashrule{\linewidth}{0.6pt}{0.5ex}}\medskip}
-
-\newenvironment{fullwidth}{%
-  \begin{adjustwidth}{}{\dimexpr-\marginparwidth-\marginparsep\relax}}
-  {\end{adjustwidth}}
-
-%% v1.3.1 \detokenize will break UTF-8 in pdflatex
-%% Using alternative from https://tex.stackexchange.com/a/530911/226
-\newcommand{\utffriendlydetokenize}[1]{%
-\scantokens{%
-  \catcode`\_=12%
-%   \catcode`\^=12%
-%   \catcode`\{=12%
-%   \catcode`\}=12%
-  \catcode`\&=12%
-  \catcode`\$=12%
-  \catcode`\#=12%
-  \catcode`\~=12%
-%   \catcode`\\=12%
-  {#1}%
-}%
-}
-%% v1.3: Incorporating hyperlinks
-%% v1.3.1: using \unfriendlydetokenize to avoid
-%% breaking unicode
-\ExplSyntaxOn
-\NewDocumentCommand{\printinfo}{m m o}{%
-  \IfNoValueTF{#3}{%
-    \mbox{\textcolor{accent}{\normalfont #1}~\utffriendlydetokenize{#2}\hspace{2em}}%
-  }{%
-     \if@withhyper%
-      \mbox{\textcolor{accent}{\normalfont #1}~
-      \href{#3}{\utffriendlydetokenize{#2}}\hspace{2em}}
-     \else%
-       \ClassWarning{Please specify [withhyper] option to enable hyperlinks. Printing out full hyperlink prefix #1 for now.}%
-      \mbox{\textcolor{accent}{\normalfont #1}~{\utffriendlydetokenize{#3#2}}\hspace{2em}}%
-     \fi%
-  }%
-}%
-
-%% v1.3: Exploring convenient creation of fields
-\NewDocumentCommand{\NewInfoField}{m m o}{%
-  \IfNoValueF{#3}{\csdef{#1 hyperprefix}{#3}}%
-  \csdef{#1 symbol}{#2}%
-  \csdef{#1}##1{%
-    \if@withhyper
-      \IfNoValueTF {#3}
-        {\printinfo{\csuse{#1 symbol}}{##1}}%
-        {\printinfo{\csuse{#1 symbol}}{##1}[\csuse{#1 hyperprefix}##1]}%
-    \else
-      \printinfo{\csuse{#1 symbol}}{##1}%
-    \fi%
-  }
+\begin{document}
+\name{ARINDAM PRADHAN}
+\tagline{Sr. Software Engineer}
+% Cropped to square from https://en.wikipedia.org/wiki/Marissa_Mayer#/media/File:Marissa_Mayer_May_2014_(cropped).jpg, CC-BY 2.0
+%% You can add multiple photos on the left or right
+\photoR{2.5cm}{arindam}
+% \photoL{2cm}{Yacht_High,Suitcase_High}
+\personalinfo{%
+  % Not all of these are required!
+  % You can add your own with \printinfo{symbol}{detail}
+  \email{arindampradhan10@gmail.com}
+  \phone{+91-9078954415}
+%   \mailaddress{House no. 139, 4th Block Kormangala}
+  \location{Kormangala, Bangalore}
+  \homepage{medium.com/crazyhacker}
+  \twitter{@rrindam}
+  \linkedin{arindampradhan}
+  \github{arindampradhan} % I'm just making this up though.
+  \dribbble{arindampradhan}
+%   \orcid{orcid.org/0000-0000-0000-0000} % Obviously making this up too. If you want to use this field (and also other academicons symbols), add "academicons" option to \documentclass{altacv}
+  %% You MUST add the academicons option to \documentclass, then compile with LuaLaTeX or XeLaTeX, if you want to use \orcid or other academicons commands.
+  % \orcid{0000-0000-0000-0000}
+  %% You can add your own arbtrary detail with
+  %% \printinfo{symbol}{detail}[optional hyperlink prefix]
+  % \printinfo{\faPaw}{Hey ho!}
+  %% Or you can declare your own field with
+  %% \NewInfoFiled{fieldname}{symbol}[optional hyperlink prefix] and use it:
+  % \NewInfoField{gitlab}{\faGitlab}[https://gitlab.com/]
 }
 
-\ExplSyntaxOff
+\makecvheader
 
-\newcommand{\name}[1]{\def\@name{#1}}
-\newcommand{\tagline}[1]{\def\@tagline{#1}}
-\newcommand{\personalinfo}[1]{\def\@personalinfo{#1}}
-\NewInfoField{email}{\faAt}[mailto:]
-\NewInfoField{mailaddress}{\faEnvelope}
-\NewInfoField{phone}{\faPhone}
-\NewInfoField{webpage}{}[https://]
-\NewInfoField{homepage}{\faGlobe}[https://]
-\NewInfoField{twitter}{\faTwitter}[https://twitter.com/]
-\NewInfoField{linkedin}{\faLinkedin}[https://linkedin.com/in/]
-\NewInfoField{github}{\faGithub}[https://github.com/]
-\NewInfoField{orcid}{\aiOrcid}[https://orcid.com/]
-\NewInfoField{location}{\faMapMarker}
-\NewInfoField{dribbble}{\faDribbble}[https://dribbble.com/]
+%% Depending on your tastes, you may want to make fonts of itemize environments slightly smaller
+\AtBeginEnvironment{itemize}{\small}
 
-% v1.2: Support for multiple photos
-\newlength{\altacv@photos@width}
-\newlength{\altacv@photo@diam@left}
-\newlength{\altacv@photo@diam@right}
-\def\altacv@left@photos{}
-\def\altacv@right@photos{}
+%% Set the left/right column width ratio to 6:4.
+\columnratio{0.6}
 
-\newcommand{\@makeaphoto}[2]{%
-  \begin{minipage}{#1}%
-    \if@normalphoto
-      \includegraphics[width=\linewidth]{#2}
-    \else
-      \tikz\path[fill overzoom image={#2}]circle[radius=0.5\linewidth];
-    \fi%
-  \end{minipage}%
+% Start a 2-column paracol. Both the left and right columns will automatically
+% break across pages if things get too long.
+\begin{paracol}{2}
+
+\cvsection{Experience}
+
+\cvevent{Sr. Software Engineer (Level-III)}{Zeta}{March 2021 -- Ongoing}{Bangalore, Karnataka}
+\begin{itemize}
+\item Led a 4-member team, overseeing 10 projects supporting various merchant centers for a diverse clientele.
+\item Our clients range from different banks in India to MNCs like Sodexo, for which we make software for their merchants.  I was eventually involved in a handover of those projects to Accenture.
+\item Currently spearheading the development of a component design system library to facilitate seamless dashboard creations for our company.
+\end{itemize}
+\divider
+
+
+\cvevent{Senior Frontend Developer}{Meesho}{March 2019 -- October 2020}{Bangalore, Karnataka}
+\begin{itemize}
+\item Designed architecture for meesho.com: a server-side rendered React app generating 5 million+ unique SEO product pages, serving 20 million Indian users.
+\item Prioritized optimizing web views for near-native speed on Android, ensuring backward compatibility with older Android OS versions.
+\end{itemize}
+
+\divider
+
+\cvevent{Software Engineer}{Rubique}{Oct 2017 -- Feb 2019}{Mumbai, Maharastra}
+\begin{itemize}
+\item Successfully orchestrated the seamless migration of the project from a PHP/jQuery site to a cutting-edge React Redux-based platform, effectively overcoming design challenges.
+\item Involved in a large-scale project with 6 Devs, 2 Designers, and PM. Implemented PWA, Adaptive Design(different design in mobile and web), and offline-first functionality.
+\end{itemize}
+
+\divider
+
+\cvevent{UX Developer}{Nowfloats}{June 2016 --  Sep 2017}{Hyderabad, Telengana}
+
+\begin{itemize}
+\item Independently developed and launched a dynamic web form project, catering to the needs of a growing customer base.
+\item Acquired expertise in React and took the initiative to train the entire team, guiding them in configuring and architecting new React projects for the company.
+\item Wrote microservices in python for URL screenshot in lambda.
+\end{itemize}
+
+
+% Adapted from @Jake's answer from http://tex.stackexchange.com/a/82729/226
+% \wheelchart{outer radius}{inner radius}{
+% comma-separated list of value/text width/color/detail}
+% Some ad-hoc tweaking to adjust the labels so that they don't overlap
+\hspace*{-1em}  %% quick hack to move the wheelchart a bit left
+\wheelchart{1.5cm}{0.5cm}{%
+  10/13em/accent!30/Sleeping \& dreaming \\ about work,
+  30/9em/accent!60/Project Planning and architecture,
+  20/11em/accent!40/Spending time\\ with families,
+  10/8em/accent!20/\footnotesize Maintaining Older Codebases and upgrading to newer libraries.
 }
 
-\newcommand{\altacv@add@photo@left}[1]{%
-  \appto{\altacv@left@photos}{%
-    \@makeaphoto{\altacv@photo@diam@left}{#1}\hspace{1ex}%
-  }%
-  \addtolength{\altacv@photos@width}{\altacv@photo@diam@left}%
-  \addtolength{\altacv@photos@width}{1ex}%
-}
-\newcommand{\altacv@add@photo@right}[1]{%
-  \appto{\altacv@right@photos}{%
-    \@makeaphoto{\altacv@photo@diam@right}{#1}\hspace{1ex}%
-  }%
-  \addtolength{\altacv@photos@width}{\altacv@photo@diam@right}%
-  \addtolength{\altacv@photos@width}{1ex}%
-}
-\newcommand{\photoL}[2]{%
-  \setlength{\altacv@photo@diam@left}{#1}%
-  \forcsvlist{\altacv@add@photo@left}{#2}%
-}
-\newcommand{\photoR}[2]{%
-  \setlength{\altacv@photo@diam@right}{#1}%
-  \forcsvlist{\altacv@add@photo@right}{#2}%
-}
-\let\photo\photoR
+% use ONLY \newpage if you want to force a page break for
+% ONLY the currentc column
+\newpage
 
-\newcommand{\namefont}{\Huge\bfseries}
-\newcommand{\taglinefont}{\large\bfseries}
-\newcommand{\personalinfofont}{\footnotesize\bfseries}
-\newcommand{\cvsectionfont}{\LARGE\bfseries}
-\newcommand{\cvsubsectionfont}{\large\bfseries}
+% \cvsection{Publications}
 
-\newcommand{\makecvheader}{%
-  \begingroup
-    \altacv@left@photos\hfill%
-    \begin{minipage}{\dimexpr\linewidth-\altacv@photos@width}%
-    \raggedright%
-    {\namefont\color{name}\MakeUppercase{\@name}\par}
-    \medskip
-    {\taglinefont\color{tagline}\@tagline\par}
-    \medskip
-    {\personalinfofont\@personalinfo\par}
-    \end{minipage}\hfill%
-    \altacv@right@photos\par%
-  \endgroup\medskip
+% \nocite{*}
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faBook}{Books}},type=book]
+
+% \divider
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faFile*[regular]}{Journal Articles}}, type=article]
+
+% \divider
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faUsers}{Conference Proceedings}},type=inproceedings]
+
+%% Switch to the right column. This will now automatically move to the second
+%% page if the content is too long.
+\switchcolumn
+
+\cvsection{Life Philosophy}
+\begin{quote}
+``Embrace the journey of your pursuits, forgo the fear of failure, and remain steadfast. Authentic dedication leads to the ultimate happiness.''
+\end{quote}
+
+\cvsection{SIDE PROJECTS}
+
+\cvachievement{\faDribbble}{Design}{
+\webpage{dribbble.com/arindampradhan}
 }
 
-\renewenvironment{quote}{\color{accent}\itshape\large}{\par}
+\divider
 
-\newcommand{\cvsection}[2][]{%
-  \bigskip%
-  \ifstrequal{#1}{}{}{\marginpar{\vspace*{\dimexpr1pt-\baselineskip}\raggedright\input{#1}}}%
-  {\color{heading}\cvsectionfont\MakeUppercase{#2}}\\[-1ex]%
-  {\color{headingrule}\rule{\linewidth}{2pt}\par}\medskip
+\cvachievement{\faCodeBranch}{Opensource}{
+\webpage{resume.github.io/?arindampradhan}
+Contributed to Openhatch a python based organizations in my college.
 }
 
-\newcommand{\cvsubsection}[1]{%
-  \smallskip%
-  {\color{subheading}\cvsubsectionfont{#1}\par}\medskip
+\divider
+
+\cvachievement{\faLaptopCode}{Hackathons}{
+Won internal hackathons in meesho and nowfloats.
+\webpage{arindampradhan.github.io/Team-dubhacks}
 }
 
-% v1.1.4: fixes inconsistent font size
-\newcommand{\cvevent}[4]{%
-  {\large\color{emphasis}#1\par}
-  \smallskip\normalsize
-  \ifstrequal{#2}{}{}{
-  \textbf{\color{accent}#2}\par
-  \smallskip}
-  \ifstrequal{#3}{}{}{{\small\makebox[0.5\linewidth][l]{\faCalendar~#3}}}%
-  \ifstrequal{#4}{}{}{{\small\makebox[0.5\linewidth][l]{\faMapMarker~#4}}}\par
-  \medskip\normalsize
-}
+\cvsection{SKILLS \& TOOLS}
 
-\newcommand{\cvsideproject}[4]{%
-  {\large\color{emphasis}#1\par}
-  \smallskip\normalsize
-  \ifstrequal{#2}{}{}{
-  \textbf{\color{accent}#2}\par
-  \smallskip}
-  \ifstrequal{#3}{}{}{{\small\makebox[0.5\linewidth][l]{\faCalendar~#3}}}%
-  \ifstrequal{#4}{}{}{{\small\makebox[0.5\linewidth][l]{\faMapMarker~#4}}}\par
-  \medskip\normalsize
-}
-
-\newcommand{\cveducation}[4]{%
-  {\large\color{emphasis}#1\par}
-  \smallskip\normalsize
-  \ifstrequal{#2}{}{}{
-  \textbf{\color{accent}#2}\par
-  \smallskip}
-  \ifstrequal{#3}{}{}{{\small\makebox[0.5\linewidth][l]{\faGraduationCap~#3}}}%
-  \medskip\normalsize
-}
-
-\newcommand{\cvachievement}[3]{%
-  \begin{tabularx}{\linewidth}{@{}p{2em} @{\hspace{1ex}} >{\raggedright\arraybackslash}X@{}}
-  \multirow{2}{*}{\Large\color{accent}#1} & \bfseries\textcolor{emphasis}{#2}\\
-  & #3
-  \end{tabularx}%
-  \smallskip
-}
-
-\newcommand{\cvtag}[1]{%
-  \tikz[baseline]\node[anchor=base,draw=body!30,rounded corners,inner xsep=1ex,inner ysep =0.75ex,text height=1.5ex,text depth=.25ex]{#1};
-}
-
-\newcommand{\cvtag}[1]{%
-  \tikz[baseline]\node[anchor=base,draw=body!30,rounded corners,inner xsep=1ex,inner ysep =0.75ex,text height=1.5ex,text depth=.25ex]{#1};
-}
+\cvtag{React.js}
+\cvtag{Vue.js}
+\cvtag{Redux} \\
+\cvtag{Mobx}
+\cvtag{HTML/Css}
+\cvtag{Sass}
 
 
-\newcommand{\cvskill}[2]{%
-\textcolor{emphasis}{\textbf{#1}}\hfill
-\foreach \x in {1,...,5}{%
-  \space{\ifnumgreater{\x}{#2}{\color{body!30}}{\color{accent}}\ratingmarker}}\par%
-}
+\divider\smallskip
 
-% Adapted from @Jake's answer at http://tex.stackexchange.com/a/82729/226
-\newcommand{\wheelchart}[4][0]{%
-    \begingroup\centering
-    \def\innerradius{#3}%
-    \def\outerradius{#2}%
-    % Calculate total
-    \pgfmathsetmacro{\totalnum}{0}%
-    \foreach \value/\colour/\name in {#4} {%
-        \pgfmathparse{\value+\totalnum}%
-        \global\let\totalnum=\pgfmathresult%
-    }%
-    \begin{tikzpicture}
+\cvtag{Databases}
+\cvtag{MySql}
+\cvtag{Mongodb}\\
+\cvtag{Redis}
+% \cvtag{PouchDB}
 
-      % Calculate the thickness and the middle line of the wheel
-      \pgfmathsetmacro{\wheelwidth}{\outerradius-\innerradius}
-      \pgfmathsetmacro{\midradius}{(\outerradius+\innerradius)/2}
-      \pgfmathsetmacro{\totalrot}{-90 + #1}
+\divider\smallskip
 
-      % Rotate so we start from the top
-      \begin{scope}[rotate=\totalrot]
+\cvtag{AWS}
+\cvtag{EC2}
+\cvtag{Cdn}
+\cvtag{S3} \\
+\cvtag{Lambda}
+% \cvtag{PouchDB}
 
-      % Loop through each value set. \cumnum keeps track of where we are in the wheel
-      \pgfmathsetmacro{\cumnum}{0}
-      \foreach \value/\width/\colour/\name in {#4} {
-            \pgfmathsetmacro{\newcumnum}{\cumnum + \value/\totalnum*360}
+\divider\smallskip
 
-            % Calculate the percent value
-            \pgfmathsetmacro{\percentage}{\value/\totalnum*100}
-            % Calculate the mid angle of the colour segments to place the labels
-            \pgfmathsetmacro{\midangle}{-(\cumnum+\newcumnum)/2}
+\cvtag{UX}
+\cvtag{Figma}
+\cvtag{Sketch}
 
-            % This is necessary for the labels to align nicely
-            \pgfmathparse{
-               (-\midangle>180?"west":"east")
-            } \edef\textanchor{\pgfmathresult}
-            \pgfmathparse{
-               (-\midangle>180?"flush left":"flush right")
-            } \edef\textalign{\pgfmathresult}
-            \pgfmathsetmacro\labelshiftdir{1-2*(-\midangle<180)}
 
-            % Draw the color segments. Somehow, the \midrow units got lost, so we add 'pt' at the end. Not nice...
-            \filldraw[draw=white,fill=\colour] (-\cumnum:\outerradius) arc (-\cumnum:-(\newcumnum):\outerradius) --
-            (-\newcumnum:\innerradius) arc (-\newcumnum:-(\cumnum):\innerradius) -- cycle;
 
-            % Draw the data labels
-            \draw  [*-,thin,emphasis] node [append after command={(\midangle:\midradius pt) -- (\midangle:\outerradius + 1ex) -- (\tikzlastnode)}] at (\midangle:\outerradius + 1ex) [xshift=\labelshiftdir*0.5cm,inner sep=1ex, outer sep=0pt, text width=\width,anchor=\textanchor,align=\textalign,font=\small,text=body]{\name};
-            % Set the old cumulated angle to the new value
-            \global\let\cumnum=\newcumnum
-        }
-      \end{scope}
-%      \draw[gray] (0,0) circle (\outerradius) circle (\innerradius);
-    \end{tikzpicture}\par
-    \endgroup
-}
+\cvsection{Languages}
 
-\newcommand{\cvref}[3]{%
-  \smallskip
-  \textcolor{emphasis}{\textbf{#1}}\par
-  \begin{description}[font=\color{accent},style=multiline,leftmargin=1.35em,align=left]
-  \item[\small\normalfont\emailsymbol] #2
-  \item[\small\normalfont\mailaddresssymbol] #3
-  \end{description}
-%   \medskip
-}
+\cvskill{Javascript/Nodejs}{4}
+% \divider
 
-\newenvironment{cvcolumn}[1]{\begin{minipage}[t]{#1}\raggedright}{\end{minipage}}
+\cvskill{Python}{3}
+% \divider
 
-\RequirePackage[backend=biber,style=authoryear,sorting=ydnt]{biblatex}
-%% For removing numbering entirely when using a numeric style
-% \setlength{\bibhang}{1em}
-% \DeclareFieldFormat{labelnumberwidth}{\makebox[\bibhang][l]{\itemmarker}}
-% \setlength{\biblabelsep}{0pt}
-\defbibheading{pubtype}{\cvsubsection{#1}}
-\renewcommand{\bibsetup}{\vspace*{-\baselineskip}}
-\AtEveryBibitem{\makebox[\bibhang][l]{\itemmarker}}
-\setlength{\bibitemsep}{0.25\baselineskip}
+\cvskill{Go}{1}
 
-% v1.1.2: make it easier to add a sidebar aligned with top of next page
-\RequirePackage{afterpage}
-\newcommand{\addsidebar}[2][]{\marginpar{%
-  \ifstrequal{#1}{}{}{\vspace*{#1}}%
-  \input{#2}}%
-}
-\newcommand{\addnextpagesidebar}[2][]{\afterpage{\addsidebar[#1]{#2}}}
 
-\AtBeginDocument{%
-  \pagestyle{empty}
-  \color{body}
-  \raggedright
-}
+\cvsection{Education}
+
+\cveducation{B.Tech Electrical Engineering}{C.E.T Bhubaneswar}{August 2012 -- July 2016}{}
+
+
+\end{paracol}
+
+\end{document}
